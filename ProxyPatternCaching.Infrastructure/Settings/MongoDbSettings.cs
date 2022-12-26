@@ -1,4 +1,4 @@
-namespace FleetManagement.Infrastructure.Settings;
+namespace ProxyPatternCaching.Infrastructure.Settings;
 
 public class MongoDbSettings
 {

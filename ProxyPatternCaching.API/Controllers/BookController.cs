@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using ProxyPatternCaching.Application.Dtos.Requests;
+using ProxyPatternCaching.Application.Services.Interfaces;
 
 namespace ProxyPatternCaching.API.Controllers;
 
@@ -6,27 +8,39 @@ namespace ProxyPatternCaching.API.Controllers;
 [Route("[controller]")]
 public class BookController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+    private readonly IBookService _bookService;
 
-    private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public BookController(IBookService bookService)
     {
-        _logger = logger;
+        _bookService = bookService;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpPost]
+    public async Task<IActionResult> AddBook(CreateBookRequest book)
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+        try
+        {
+            var response = await _bookService.AddBook(book);
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message);
+        }
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetBook(string id)
+    {
+        try
+        {
+            var book = await _bookService.GetBook(id);
+            return Ok(book);
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message);
+        }
     }
 }

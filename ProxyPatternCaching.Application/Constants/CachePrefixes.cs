@@ -1,6 +1,6 @@
 namespace ProxyPatternCaching.Application.Constants;
 
-public class CachePrefixes
+public static class CachePrefixes
 {
-    
+    public const string Book = "Book:";
 }

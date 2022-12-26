@@ -1,4 +1,4 @@
-namespace ProxyPatternCaching.Application.Constants;
+namespace ProxyPatternCaching.Infrastructure.Constants;
 
 public static class CachePrefixes
 {
